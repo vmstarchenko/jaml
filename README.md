@@ -25,50 +25,57 @@ jiml defines a couple of jinja filters specialized for yaml templates writing:
 ...     'some_object': {'a': 1, 3: (1, 2, 3) },
 ...     'simple_list': [1, 2],
 ... }
->>> 
->>> # use simple string as object value
+```
+- use simple string as object value
+```python
 >>> template = '''key: {{ simple_string_var | qstr }}'''
 >>> print(jiml.render(template, context))
 key: "some_text"
 >>> print(jiml.convert(template, context))
 {'key': 'some_text'}
->>> 
->>> # use complex string as object value
+```
+- use complex string as object value
+```python
 >>> template = '''key: {{ complex_string_var | qstr }}'''
 >>> print(jiml.render(template, context))
 key: "some text:\"with\nstrange'symbols"
 >>> print(jiml.convert(template, context))
 {'key': 'some text:"with\nstrange\'symbols'}
->>> 
->>> # use complex string as object value
+```
+- use complex string as object value
+```python
 >>> template = '''{{ complex_string_var | qstr }}: value'''
 >>> print(jiml.render(template, context))
 "some text:\"with\nstrange'symbols": value
 >>> print(jiml.convert(template, context))
 {'some text:"with\nstrange\'symbols': 'value'}
->>> 
->>> # use empty string by qstr
+```
+- use empty string by qstr
+```python
 >>> template = '''key: {{ "" | qstr }}'''
 >>> print(jiml.render(template, context))
 key: ""
 >>> print(jiml.convert(template, context))
 {'key': ''}
->>> 
->>> # use number as string value
+```
+- use number as string value
+```python
 >>> template = '''key: {{ int_var | qstr }}'''
 >>> print(jiml.render(template, context))
 key: "42"
 >>> print(jiml.convert(template, context))
 {'key': '42'}
->>> 
->>> # use None as string value
+```
+- use None as string value
+```python
 >>> template = '''key: {{ None | qstr }}'''
 >>> print(jiml.render(template, context))
 key: ""
 >>> print(jiml.convert(template, context))
 {'key': ''}
->>> 
->>> # use optional as string value
+```
+- use optional as string value
+```python
 >>> template = '''\
 ... optional_not_empty: {{ (simple_string_var | qstr) if simple_string_var is not none else 'null' }}
 ... optional_empty:     {{ (null | qstr)              if null              is not none else 'null' }}
@@ -82,43 +89,49 @@ optional_not_empty_with_default: "some_text"
 optional_empty_with_default:     "default"
 >>> print(jiml.convert(template, context))
 {'optional_not_empty': 'some_text', 'optional_empty': None, 'optional_not_empty_with_default': 'some_text', 'optional_empty_with_default': 'default'}
->>> 
->>> # use variable as part of result string by str
+```
+- use variable as part of result string by str
+```python
 >>> template = '''key: "some prefix {{ simple_string_var | str }}"'''
 >>> print(jiml.render(template, context))
 key: "some prefix some_text"
 >>> print(jiml.convert(template, context))
 {'key': 'some prefix some_text'}
->>> 
->>> # use number variable as int value
+```
+- use number variable as int value
+```python
 >>> template = '''key: {{ int_var | int }}'''
 >>> print(jiml.render(template, context))
 key: 42
 >>> print(jiml.convert(template, context))
 {'key': 42}
->>> 
->>> # use number in string var as int value
+```
+- use number in string var as int value
+```python
 >>> template = '''key: {{ int_string_var | int }}'''
 >>> print(jiml.render(template, context))
 key: 42
 >>> print(jiml.convert(template, context))
 {'key': 42}
->>> 
->>> # use None as int value
+```
+- use None as int value
+```python
 >>> template = '''key: {{ None | int }}'''
 >>> print(jiml.render(template, context))
 key: 0
 >>> print(jiml.convert(template, context))
 {'key': 0}
->>> 
->>> # use complex object as inserted value
+```
+- use complex object as inserted value
+```python
 >>> template = '''key: {{ some_object | json.dumps }}'''
 >>> print(jiml.render(template, context))
 key: {"a": 1, "3": [1, 2, 3]}
 >>> print(jiml.convert(template, context))
 {'key': {'a': 1, '3': [1, 2, 3]}}
->>> 
->>> # use dicts in yaml or json form
+```
+- use dicts in yaml or json form
+```python
 >>> template = '''\
 ... as_json: {
 ...     k1: {{ simple_string_var | qstr }},
@@ -138,8 +151,9 @@ as_yaml:
     k2: v2
 >>> print(jiml.convert(template, context))
 {'as_json': {'k1': 'some_text', 'k2': 'v2'}, 'as_yaml': {'k1': 'some_text', 'k2': 'v2'}}
->>> 
->>> # use lists in yaml or json form
+```
+- use lists in yaml or json form
+```python
 >>> template = '''\
 ... as_json: [
 ...     {{ simple_string_var | qstr }},
@@ -163,8 +177,9 @@ as_yaml:
     - 1
 >>> print(jiml.convert(template, context))
 {'as_json': ['some_text', {'a': 1}, 1], 'as_yaml': ['some_text', {'a': 1}, 1]}
->>> 
->>> # use jinja or yaml comments
+```
+- use jinja or yaml comments
+```python
 >>> template = '''\
 ... key1: "test.{# jinja cut this text #}.comment"
 ... key2: "test.comment"  # yaml cut this text
@@ -174,8 +189,9 @@ key1: "test..comment"
 key2: "test.comment"  # yaml cut this text
 >>> print(jiml.convert(template, context))
 {'key1': 'test..comment', 'key2': 'test.comment'}
->>> 
->>> # use jinja as loops value
+```
+- use jinja as loops value
+```python
 >>> template = '''\
 ... key1:
 ...     {% for x in simple_list %}
@@ -213,8 +229,9 @@ key2:
     
 >>> print(jiml.convert(template, context))
 {'key1': [{'k1': 1, 'v1': 'v1'}, {'k1': 2, 'v1': 'v1'}], 'key2': [{'k1': 1, 'v1': 'v1'}, {'k1': 2, 'v1': 'v1'}]}
->>> 
->>> # use inline conditional keys and values
+```
+- use inline conditional keys and values
+```python
 >>> template = '''\
 ... {{ 'in_key' if True else 'oops' }}: value1
 ... key2: {{ 'oops' if False else 'in_value' }}
@@ -226,8 +243,9 @@ key2: in_value
 both: both
 >>> print(jiml.convert(template, context))
 {'in_key': 'value1', 'key2': 'in_value', 'both': 'both'}
->>> 
->>> # use block conditional keys
+```
+- use block conditional keys
+```python
 >>> template = '''\
 ... {% if True %}key2{% else %}oops{% endif %}: value2
 ... # use '-' for same result but multiline format
@@ -243,8 +261,9 @@ key2: value2
 key1: value1
 >>> print(jiml.convert(template, context))
 {'key2': 'value2', 'key1': 'value1'}
->>> 
->>> # use block conditional values
+```
+- use block conditional values
+```python
 >>> template = '''\
 ... key1: {% if False -%}
 ...     value1
@@ -256,8 +275,9 @@ key1: value1
 key1: "some_text"
 >>> print(jiml.convert(template, context))
 {'key1': 'some_text'}
->>> 
->>> # use block condition for key value pair
+```
+- use block condition for key value pair
+```python
 >>> template = '''\
 ... key1: value1
 ... {% if True -%}
@@ -276,3 +296,4 @@ key4: value4
 >>> 
 >>> 
 ```
+
