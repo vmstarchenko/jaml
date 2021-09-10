@@ -1,14 +1,14 @@
 from distutils.core import setup
 
 setup(
-    name='jaml',
-    packages=['jaml'],
+    name='jiml',
+    packages=['jiml'],
     version='0.1',
     license='MIT',
     description='Convert json to json using jinja2 and yaml',
     author='Vladimir',
     author_email='vmstarchenko@edu.hse.ru',
-    url='https://github.com/vmstarchenko/jaml',
+    url='https://github.com/vmstarchenko/jiml',
     keywords=['json2json', 'json', 'yaml', 'template'],
     install_requires=[
         'PyYAML',

@@ -1,6 +1,7 @@
+import json
+
 import jinja2
 import yaml
-import json
 
 
 __all__ = (
@@ -10,7 +11,7 @@ __all__ = (
 
 def qstr(inp):
     if inp is None:
-        inp = ""
+        inp = ''
     return json.dumps(str(inp))
 
 
@@ -38,5 +39,9 @@ class Environment(jinja2.Environment):
 _env = Environment()
 
 
+def render(template, context):
+    return _env.from_string(template).render(context)
+
+
 def convert(template, context):
-    return yaml.safe_load(_env.from_string(template).render(context))
+    return yaml.safe_load(render(template, context))
