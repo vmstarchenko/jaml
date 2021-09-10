@@ -23,7 +23,7 @@ def json_dumps(inp):
     return json.dumps(inp, ensure_ascii=False)
 
 
-JAML_FILTERS = {
+JIML_FILTERS = {
     'qstr': qstr,
     'str': str_,
     'json.dumps': json_dumps,
@@ -33,7 +33,7 @@ JAML_FILTERS = {
 class Environment(jinja2.Environment):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.filters.update(JAML_FILTERS)
+        self.filters.update(JIML_FILTERS)
 
 
 _env = Environment()
