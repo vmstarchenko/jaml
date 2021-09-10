@@ -1,11 +1,19 @@
 from distutils.core import setup
+from pathlib import Path
+
+this_directory = Path(__file__).parent
+
+long_description = (this_directory / "README.md").read_text()
+
 
 setup(
     name='jiml',
     packages=['jiml'],
-    version='0.1',
+    version='0.1.1',
     license='MIT',
     description='Convert json to json using jinja2 and yaml',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Vladimir',
     author_email='vmstarchenko@edu.hse.ru',
     url='https://github.com/vmstarchenko/jiml',
