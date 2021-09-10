@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'PyYAML',
         'Jinja2',
+        'jinja-vanish',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

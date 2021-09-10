@@ -11,22 +11,22 @@ context = {
 }
 
 # use simple string as object value
-template = '''key: {{ simple_string_var | qstr }}'''
+template = '''key: {{ simple_string_var }}'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
 # use complex string as object value
-template = '''key: {{ complex_string_var | qstr }}'''
+template = '''key: {{ complex_string_var }}'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
 # use complex string as object value
-template = '''{{ complex_string_var | qstr }}: value'''
+template = '''{{ complex_string_var }}: value'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
 # use empty string by qstr
-template = '''key: {{ "" | qstr }}'''
+template = '''key: {{ "" }}'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
@@ -42,10 +42,10 @@ print(jiml.convert(template, context))
 
 # use optional as string value
 template = '''\
-optional_not_empty: {{ (simple_string_var | qstr) if simple_string_var is not none else 'null' }}
-optional_empty:     {{ (null | qstr)              if null              is not none else 'null' }}
-optional_not_empty_with_default: {{ (simple_string_var if simple_string_var is not none else 'default') | qstr }}
-optional_empty_with_default:     {{ (null              if null              is not none else 'default') | qstr }}
+optional_not_empty: {{ simple_string_var if simple_string_var is not none else None }}
+optional_empty:     {{ null              if null              is not none else None }}
+optional_not_empty_with_default: {{ simple_string_var if simple_string_var is not none else 'default' }}
+optional_empty_with_default:     {{ null              if null              is not none else 'default' }}
 '''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
@@ -56,7 +56,7 @@ print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
 # use number variable as int value
-template = '''key: {{ int_var | int }}'''
+template = '''key: {{ int_var }}'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
 
@@ -78,11 +78,11 @@ print(jiml.convert(template, context))
 # use dicts in yaml or json form
 template = '''\
 as_json: {
-    k1: {{ simple_string_var | qstr }},
+    k1: {{ simple_string_var }},
     k2: v2,
 }
 as_yaml:
-    k1: {{ simple_string_var | qstr }}
+    k1: {{ simple_string_var }}
     k2: v2
 '''
 print(jiml.render(template, context))
@@ -91,12 +91,12 @@ print(jiml.convert(template, context))
 # use lists in yaml or json form
 template = '''\
 as_json: [
-    {{ simple_string_var | qstr }},
+    {{ simple_string_var }},
     { a: 1},
     1,
 ]
 as_yaml:
-    - {{ simple_string_var | qstr }}
+    - {{ simple_string_var }}
     - { a: 1}
     - 1
 '''
@@ -133,7 +133,7 @@ print(jiml.convert(template, context))
 template = '''\
 {{ 'in_key' if True else 'oops' }}: value1
 key2: {{ 'oops' if False else 'in_value' }}
-{{ 'both: both' if True else 'oops: oops' }}
+{{ ('both: both' if True else 'oops: oops') | safe }}
 '''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
@@ -156,7 +156,7 @@ template = '''\
 key1: {% if False -%}
     value1
 {%- else -%}
-    {{ simple_string_var | qstr }}
+    {{ simple_string_var }}
 {%- endif %}
 '''
 print(jiml.render(template, context))
