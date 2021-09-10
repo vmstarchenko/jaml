@@ -48,9 +48,12 @@ def parse_args():
         '-O', '--output-format',
         choices=FORMATS,
     )
-    parser.add_argument('-n', '--indent', type=int)
-    parser.add_argument('-a', '--allow-unicode', action='store_true')
+
     parser.add_argument('-s', '--sort-keys', action='store_true')
+    parser.add_argument('-u', '--allow-unicode', action='store_true')
+    parser.add_argument('-n', '--indent', type=int)
+
+    parser.add_argument('-A', '--no-autoescape', action='store_true')
 
     return parser.parse_args()
 
@@ -76,7 +79,7 @@ def main():
     output_format = args.output_format or output_suffix or 'json'
 
     input_data = LOADERS[input_format](input_text)
-    output_data = jiml.convert(template, input_data)
+    output_data = jiml.convert(template, input_data, autoescape=not args.no_autoescape)
     output_text = DUMPERS[output_format](
         output_data,
         indent=args.indent,

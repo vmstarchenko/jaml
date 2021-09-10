@@ -10,26 +10,30 @@ __all__ = (
 )
 
 
-def dump(obj):
-    return yaml.dump(
+def yaml_escape(obj):
+    res = yaml.dump(
         obj,
         width=float("inf"),
         default_flow_style=True,
         default_style='"',
     ).strip('\n')
+    if '\n' in res:
+        raise ValueError('escaped value contains newline symbol for object {}'.format(obj))
+    return res
 
 
-def qstr(inp):
+def _qstr(inp):
     if inp is None:
         inp = ''
     return json.dumps(str(inp))
 
-def qstr_(inp):
-    return jinja2.Markup(qstr(inp))
+
+def qstr(inp):
+    return jinja2.Markup(_qstr(inp))
 
 
 def str_(inp):
-    return jinja2.Markup(qstr(inp)[1:-1])
+    return jinja2.Markup(_qstr(inp)[1:-1])
 
 
 def json_dumps(inp):
@@ -37,27 +41,31 @@ def json_dumps(inp):
 
 
 JIML_FILTERS = {
-    'qstr': qstr_,
+    'qstr': qstr,
     'str': str_,
     'json.dumps': json_dumps,
-    'e': dump,
-    'escape': dump,
+    'yaml.dumps': yaml_escape,
+    'e': yaml_escape,
+    'escape': yaml_escape,
 }
 
 
-
 class Environment(DynAutoEscapeEnvironment):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, *args, autoescape=False, escape_func=None, **kwargs):
+        if autoescape and escape_func is None:
+            escape_func = markup_escape_func(yaml_escape)
+        super().__init__(*args, autoescape=autoescape, escape_func=escape_func, **kwargs)
         self.filters.update(JIML_FILTERS)
 
 
-_env = Environment(autoescape=True, escape_func=markup_escape_func(dump))
+_autoescape_env = Environment(autoescape=True)
+_env = Environment()
 
 
-def render(template, context):
-    return _env.from_string(template).render(context)
+def render(template, context, autoescape=True):
+    env = _autoescape_env if autoescape else _env
+    return env.from_string(template).render(context)
 
 
-def convert(template, context):
-    return yaml.safe_load(render(template, context))
+def convert(template, context, autoescape=True):
+    return yaml.safe_load(render(template, context, autoescape=autoescape))
