@@ -1,4 +1,5 @@
 import json
+import pathlib
 
 import jinja2
 import yaml
@@ -6,11 +7,15 @@ from jinja_vanish import DynAutoEscapeEnvironment, markup_escape_func
 
 
 __all__ = (
-    'qstr', 'str', 'json_dumps', 'FILTERS', 'Environment', 'convert',
+    'qstr', 'str', 'json_dumps',
+    'FILTERS',
+    'JimlTemplate', 'JimlEnvironment',
+    'load_template', 'render', 'convert',
 )
 
 
 def yaml_escape(obj):
+    # TODO: undefined
     res = yaml.dump(
         obj,
         width=float("inf"),
@@ -50,7 +55,16 @@ JIML_FILTERS = {
 }
 
 
-class Environment(DynAutoEscapeEnvironment):
+class JimlTemplate(jinja2.Template):
+    def convert(self, *args, **kwargs):
+        return yaml.safe_load(self.render(*args, **kwargs))
+
+    __call__ = convert
+
+
+class JimlEnvironment(DynAutoEscapeEnvironment):
+    template_class = JimlTemplate
+
     def __init__(self, *args, autoescape=False, escape_func=None, **kwargs):
         if autoescape and escape_func is None:
             escape_func = markup_escape_func(yaml_escape)
@@ -58,14 +72,20 @@ class Environment(DynAutoEscapeEnvironment):
         self.filters.update(JIML_FILTERS)
 
 
-_autoescape_env = Environment(autoescape=True)
-_env = Environment()
+_autoescape_env = JimlEnvironment(autoescape=True)
+_env = JimlEnvironment()
+
+
+def load_template(template=None, path=None, autoescape=True):
+    if template is None:
+        template = pathlib.Path(path).read_text()
+    env = _autoescape_env if autoescape else _env
+    return env.from_string(template)
 
 
 def render(template, context, autoescape=True):
-    env = _autoescape_env if autoescape else _env
-    return env.from_string(template).render(context)
+    return load_template(template, autoescape=autoescape).render(context)
 
 
 def convert(template, context, autoescape=True):
-    return yaml.safe_load(render(template, context, autoescape=autoescape))
+    return load_template(template, autoescape=autoescape).render(context)
