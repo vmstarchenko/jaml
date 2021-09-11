@@ -88,4 +88,4 @@ def render(template, context, autoescape=True):
 
 
 def convert(template, context, autoescape=True):
-    return load_template(template, autoescape=autoescape).render(context)
+    return load_template(template, autoescape=autoescape).convert(context)
