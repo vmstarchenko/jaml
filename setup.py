@@ -9,7 +9,7 @@ long_description = (this_directory / "README.md").read_text()
 setup(
     name='jiml',
     packages=['jiml'],
-    version='0.1.2',
+    version='0.1.3',
     license='MIT',
     description='Convert json to json using jinja2 and yaml',
     long_description=long_description,
