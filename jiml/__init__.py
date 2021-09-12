@@ -9,21 +9,31 @@ from jinja_vanish import DynAutoEscapeEnvironment, markup_escape_func
 __all__ = (
     'qstr', 'str', 'json_dumps',
     'FILTERS',
+    'config',
     'JimlTemplate', 'JimlEnvironment',
     'load_template', 'render', 'convert',
 )
 
 
+# TODO: add exceptions
+
+
 def yaml_escape(obj):
-    # TODO: undefined
+    if isinstance(obj, jinja2.Undefined):
+        if isinstance(obj, jinja2.StrictUndefined):
+            raise jinja2.exceptions.UndefinedError(f"Can't serialize StrictUndefined var '{obj._undefined_name}'")
+        return ''
+
     res = yaml.dump(
         obj,
         width=float("inf"),
         default_flow_style=True,
         default_style='"',
     ).strip('\n')
+
     if '\n' in res:
         raise ValueError('escaped value contains newline symbol for object {}'.format(obj))
+
     return res
 
 
@@ -72,20 +82,38 @@ class JimlEnvironment(DynAutoEscapeEnvironment):
         self.filters.update(JIML_FILTERS)
 
 
-_autoescape_env = JimlEnvironment(autoescape=True)
-_env = JimlEnvironment()
+_env = None
 
 
-def load_template(template=None, path=None, autoescape=True):
+class EnvOptions:
+    def __init__(self):
+        self.values = {}
+
+    def update(self, values):
+        global _env
+
+        self.values.update(values)
+        _env = JimlEnvironment(**self.values)
+
+
+config = EnvOptions()
+config.update({
+    'autoescape': True,
+    'undefined': jinja2.StrictUndefined,
+})
+assert _env is not None
+
+
+def load_template(template=None, path=None, env=None):
     if template is None:
         template = pathlib.Path(path).read_text()
-    env = _autoescape_env if autoescape else _env
+    env = env or _env
     return env.from_string(template)
 
 
-def render(template, context, autoescape=True):
-    return load_template(template, autoescape=autoescape).render(context)
+def render(template, context, env=None):
+    return load_template(template, env=env).render(context)
 
 
-def convert(template, context, autoescape=True):
-    return load_template(template, autoescape=autoescape).convert(context)
+def convert(template, context, env=None):
+    return load_template(template, env=env).convert(context)
