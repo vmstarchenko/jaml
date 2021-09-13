@@ -27,7 +27,7 @@ def import_name(path):
 
 def fix_imports(imports):
     if isinstance(imports, list):
-        imports = {name: name for name in imports}
+        imports = {name.rsplit('.', 1)[-1]: name for name in imports}
     return {
         name: import_name(value) if isinstance(value, str) else value
         for name, value in imports.items()
@@ -98,7 +98,6 @@ class JimlEnvironment(DynAutoEscapeEnvironment):
 
         if filters is None:
             filters = JIML_FILTERS
-        print(filters)
         self.filters.update(fix_imports(filters))
 
         if globals is not None:
