@@ -96,8 +96,10 @@ class JimlEnvironment(DynAutoEscapeEnvironment):
             escape_func = markup_escape_func(yaml_escape)
         super().__init__(*args, autoescape=autoescape, escape_func=escape_func, **kwargs)
 
-        if filters is not None:
-            self.filters.update(fix_imports(filters))
+        if filters is None:
+            filters = JIML_FILTERS
+        self.filters.update(fix_imports(filters))
+
         if globals is not None:
             self.globals.update(fix_imports(globals))
 
