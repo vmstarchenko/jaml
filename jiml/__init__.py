@@ -91,13 +91,14 @@ class JimlTemplate(jinja2.Template):
 class JimlEnvironment(DynAutoEscapeEnvironment):
     template_class = JimlTemplate
 
-    def __init__(self, *args, autoescape=False, escape_func=None, filters=None, globals=None, **kwargs):
+    def __init__(self, *args, autoescape=True, undefined=jinja2.StrictUndefined, escape_func=None, filters=None, globals=None, **kwargs):
         if autoescape and escape_func is None:
             escape_func = markup_escape_func(yaml_escape)
         super().__init__(*args, autoescape=autoescape, escape_func=escape_func, **kwargs)
 
         if filters is None:
             filters = JIML_FILTERS
+        print(filters)
         self.filters.update(fix_imports(filters))
 
         if globals is not None:
@@ -119,11 +120,7 @@ class EnvOptions:
 
 
 config = EnvOptions()
-config.update({
-    'autoescape': True,
-    'undefined': jinja2.StrictUndefined,
-    'filters': JIML_FILTERS,
-})
+config.update({})
 assert _env is not None
 
 
