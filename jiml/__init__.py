@@ -1,5 +1,6 @@
 import json
 import pathlib
+from importlib import import_module
 
 import jinja2
 import yaml
@@ -15,7 +16,22 @@ __all__ = (
 )
 
 
-# TODO: add exceptions
+def import_name(path):
+    if '.' not in path:
+        return import_module(path)
+
+    module_path, name = path.rsplit('.', 1)
+    module = import_module(module_path)
+    return getattr(module, name)
+
+
+def fix_imports(imports):
+    if isinstance(imports, list):
+        imports = {name: name for name in imports}
+    return {
+        name: import_name(value) if isinstance(value, str) else value
+        for name, value in imports.items()
+    }
 
 
 def yaml_escape(obj):
@@ -75,11 +91,15 @@ class JimlTemplate(jinja2.Template):
 class JimlEnvironment(DynAutoEscapeEnvironment):
     template_class = JimlTemplate
 
-    def __init__(self, *args, autoescape=False, escape_func=None, **kwargs):
+    def __init__(self, *args, autoescape=False, escape_func=None, filters=None, globals=None, **kwargs):
         if autoescape and escape_func is None:
             escape_func = markup_escape_func(yaml_escape)
         super().__init__(*args, autoescape=autoescape, escape_func=escape_func, **kwargs)
-        self.filters.update(JIML_FILTERS)
+
+        if filters is not None:
+            self.filters.update(fix_imports(filters))
+        if globals is not None:
+            self.globals.update(fix_imports(globals))
 
 
 _env = None
@@ -100,6 +120,7 @@ config = EnvOptions()
 config.update({
     'autoescape': True,
     'undefined': jinja2.StrictUndefined,
+    'filters': JIML_FILTERS,
 })
 assert _env is not None
 
@@ -107,7 +128,12 @@ assert _env is not None
 def load_template(template=None, path=None, env=None):
     if template is None:
         template = pathlib.Path(path).read_text()
-    env = env or _env
+
+    if isinstance(env, dict):
+        env = JimlEnvironment(**env)
+    elif env is None:
+        env = _env
+
     return env.from_string(template)
 
 
