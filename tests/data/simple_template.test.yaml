@@ -1,0 +1,7 @@
+- input:
+    value: hello
+  output:
+    key: hello
+- input:
+    value: 1
+  output: 'exception: InputSchemaValidationError'
