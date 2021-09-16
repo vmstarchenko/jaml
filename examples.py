@@ -11,6 +11,26 @@ context = {
 }
 
 # use simple string as object value
+template = jiml.load_template('''
+# options
+autoescape: false
+input_schema:
+  properties:
+    a: { type: string }
+  required: [ a ]
+output_schema:
+  properties:
+    key: { type: string }
+  required: [ key ]
+---
+key: {{ a }}
+''')
+context = {'a': 'asdf'}
+print(template(context))
+print(template(context))
+
+"""
+# use simple string as object value
 template = '''key: {{ simple_string_var }}'''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
@@ -174,4 +194,4 @@ key4: value4
 '''
 print(jiml.render(template, context))
 print(jiml.convert(template, context))
-
+"""
