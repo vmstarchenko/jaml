@@ -1,0 +1,31 @@
+- input:
+    var: 1
+  output:
+    var_with_qstr: '1'
+    var_with_str: prefix_1
+- input:
+    var: simple_string
+  output:
+    var_with_qstr: simple_string
+    var_with_str: prefix_simple_string
+- input:
+    var: "complex: string\nwith\tstrange\"values{"
+  output:
+    var_with_qstr: "complex: string\nwith\tstrange\"values{"
+    var_with_str: "prefix_complex: string\nwith\tstrange\"values{"
+- input:
+    var: null
+  output:
+    var_with_qstr: ''
+    var_with_str: prefix_
+- input:
+    var:
+    - list
+  output:
+    var_with_qstr: '[''list'']'
+    var_with_str: prefix_['list']
+- input:
+    missing_var: test
+  output:
+    var_with_qstr: ''
+    var_with_str: prefix_

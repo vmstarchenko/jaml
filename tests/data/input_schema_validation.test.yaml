@@ -1,0 +1,13 @@
+- input:
+    value: 1
+  output:
+    key: 1
+- input:
+    value: str
+  output: 'exception: InputSchemaValidationError'
+- input:
+    another_value: 2
+    value: 1
+  output: 'exception: InputSchemaValidationError'
+- input: {}
+  output: 'exception: InputSchemaValidationError'

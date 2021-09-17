@@ -19,8 +19,7 @@ def yaml_escape(obj):
         default_style='"',
     ).strip('\n')
 
-    if '\n' in res:
-        raise ValueError('escaped value contains newline symbol for object {}'.format(obj))
+    assert '\n' not in res, f'escaped value contains newline symbol for object {obj}'
 
     return res
 
@@ -39,15 +38,9 @@ def str_(inp):
     return jinja2.Markup(_qstr(inp)[1:-1])
 
 
-def json_dumps(inp):
-    return jinja2.Markup(json.dumps(inp, ensure_ascii=False))
-
-
 JIML_FILTERS = {
     'qstr': qstr,
     'str': str_,
-    'json.dumps': json_dumps,
-    'yaml.dumps': yaml_escape,
     'e': yaml_escape,
     'escape': yaml_escape,
 }

@@ -1,0 +1,12 @@
+- input:
+    value: 'key: 1'
+  output: 'exception: OutputSchemaValidationError'
+- input:
+    value: 'key: a'
+  output: 'exception: OutputSchemaValidationError'
+- input:
+    value: 'key: a\nvalue: b'
+  output: 'exception: LoadResultsError'
+- input:
+    value: 'value: b'
+  output: 'exception: OutputSchemaValidationError'
