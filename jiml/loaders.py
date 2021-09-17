@@ -13,7 +13,12 @@ from .config import config
 def split_template_options(template):
     doc_separator = '\n---\n'
     options = {}
-    if re.match(r'^\s*#\s*options\n', template) and doc_separator:
+    if re.match(r'^\s*#\s*options\n', template):
+        if doc_separator not in template:
+            raise exceptions.TemplateOptionsSyntaxError(
+                'options specified but not separated from template'
+            )
+
         options_data, template = template.split(doc_separator, 1)
         try:
             options = yaml.safe_load(options_data) or {}

@@ -4,7 +4,7 @@ import jinja2
 import yaml
 
 
-def yaml_escape(obj):
+def escape(obj):
     if isinstance(obj, jinja2.Undefined):
         if isinstance(obj, jinja2.StrictUndefined):
             raise jinja2.exceptions.UndefinedError(
@@ -38,9 +38,9 @@ def str_(inp):
     return jinja2.Markup(_qstr(inp)[1:-1])
 
 
-JIML_FILTERS = {
+FILTERS = {
     'qstr': qstr,
     'str': str_,
-    'e': yaml_escape,
-    'escape': yaml_escape,
+    'e': escape,
+    'escape': escape,
 }

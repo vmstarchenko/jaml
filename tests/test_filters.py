@@ -22,7 +22,7 @@ def test_str_filters():
     f.run()
 
 
-def test_yaml_escape_undefined():
+def test_escape_undefined():
     t = jiml.load_template(textwrap.dedent(
         '''
         # options
@@ -34,7 +34,7 @@ def test_yaml_escape_undefined():
     assert t({'another_value': '1'}) == {'key': None}
 
 
-def test_yaml_escape_strictundefined():
+def test_escape_strictundefined():
     with pytest.raises(jiml.exceptions.RenderTemplateError):
         t = jiml.load_template(textwrap.dedent(
             '''
@@ -44,7 +44,7 @@ def test_yaml_escape_strictundefined():
         t({'another_value': '1'})
 
 
-def test_yaml_escape_custom_undefined():
+def test_escape_custom_undefined():
     t = jiml.load_template(textwrap.dedent(
         '''
         # options

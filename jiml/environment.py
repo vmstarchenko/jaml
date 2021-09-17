@@ -4,7 +4,7 @@ import jsonschema
 from jinja_vanish import DynAutoEscapeEnvironment, markup_escape_func
 
 from . import exceptions
-from .filters import JIML_FILTERS, yaml_escape
+from .filters import FILTERS, escape
 from .common import fix_imports, get_undefined
 
 
@@ -43,7 +43,7 @@ class JimlEnvironment(DynAutoEscapeEnvironment):
             self, *args, autoescape=True, undefined=jinja2.StrictUndefined, escape_func=None,
             filters=None, globals=None, **kwargs):
         if autoescape and escape_func is None:
-            escape_func = markup_escape_func(yaml_escape)
+            escape_func = markup_escape_func(escape)
         super().__init__(
             *args,
             autoescape=autoescape,
@@ -53,7 +53,7 @@ class JimlEnvironment(DynAutoEscapeEnvironment):
         )
 
         if filters is None:
-            filters = JIML_FILTERS
+            filters = FILTERS
         self.filters.update(fix_imports(filters))
 
         if globals is not None:
