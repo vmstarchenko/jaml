@@ -19,3 +19,7 @@ def test_load_template():
     ))
     f = jiml.testlib.TestFile(t, DATA_DIR / 'simple_template.test.yaml')
     f.run()
+
+
+def test_render_template():
+    assert jiml.render('key: {{ value }}', {'value': 'v'}) == 'key: "v"'

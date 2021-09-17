@@ -31,7 +31,8 @@ def test_yaml_escape_undefined():
         key: {{ value }}
         '''
     ))
-    t({'another_value': '1'})
+    assert t({'another_value': '1'}) == {'key': None}
+
 
 def test_yaml_escape_strictundefined():
     with pytest.raises(jiml.exceptions.RenderTemplateError):
@@ -42,3 +43,14 @@ def test_yaml_escape_strictundefined():
         ))
         t({'another_value': '1'})
 
+
+def test_yaml_escape_custom_undefined():
+    t = jiml.load_template(textwrap.dedent(
+        '''
+        # options
+        undefined: jiml.common.Undefined
+        ---
+        key: {{ value }}
+        '''
+    ))
+    t({'another_value': '1'})
