@@ -13,13 +13,20 @@ First template
 template as plain text so no difference between nested and structures
 ::
 
-  >>> import jiml
+  >>> convert = jiml.load_template('''
+  ... author: {{ author.name }}
+  ... permissions:
+  ...   authenticated: {{ authenticated }}
+  ... ''')
+  >>> convert({'author': {'name': 'John' }, 'authenticated': True})
+  {'author': 'John', 'permissions': {'authenticated': True}}
 
 Templates almost pure jinja but customized for yaml files.
-Before values insert variables are escaped.
+Before values insert variables are escaped. For string parts use str filter
 ::
 
   >>> import jiml
+  >>> template = {'v
 
 
 For lists use jinja loops

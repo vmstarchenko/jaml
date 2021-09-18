@@ -56,8 +56,4 @@ pygments_style = 'sphinx'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 html_logo = 'logo-full.png'  # json logo + python colors (#fec007 #0176bc)
-html_theme_options = {
-        'logo_only': True,
-        'display_version': False,
-}
 html_favicon = 'favicon.ico'

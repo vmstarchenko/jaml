@@ -12,7 +12,6 @@ and flexibility of `yaml <https://pyyaml.org/wiki/PyYAMLDocumentation>`_ format.
 **Short usage example**::
 
   >>> import jiml
-  >>> 
   >>> template = '''
   ... # options
   ... globals: [urllib.parse.urlparse]
@@ -28,7 +27,6 @@ and flexibility of `yaml <https://pyyaml.org/wiki/PyYAMLDocumentation>`_ format.
   ...   {% endfor %}
   ... ]
   ... '''
-  >>> 
   >>> convert_film_for_responce = jiml.load_template(template)
   >>> print(json.dumps(convert_film_for_responce({
   ...     'title': 'Your favourite film',
@@ -52,7 +50,6 @@ and flexibility of `yaml <https://pyyaml.org/wiki/PyYAMLDocumentation>`_ format.
       "title": "Your favourite film",
       "year": 2021
   }
-  >>> 
 
 This package demonstrates an approach for converting input json to output json without using python code directly.
 The conversion is done by Jinja library. Input json used as context for rendered template. Conversion rules are specified in template.
