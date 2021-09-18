@@ -10,6 +10,7 @@ Jiml use power of `jinja2 <https://jinja.palletsprojects.com/en/3.0.x/templates/
 and flexibility of `yaml <https://pyyaml.org/wiki/PyYAMLDocumentation>`_ format.
 
 **Short usage example**::
+
   >>> import jiml
   >>> 
   >>> template = '''
