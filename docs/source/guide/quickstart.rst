@@ -60,8 +60,24 @@ For lists use jinja loops
 Ifs are also available
 ::
 
-  >>> import jiml
-
+  >>> convert = jiml.load_template('''
+  ... inline_if: {{ value if value is not none else 'default_value' }}
+  ... multiline_if:
+  ...   {% if value is not none -%}
+  ...     {{ value }}
+  ...   {%- else -%}
+  ...     {{ other_value }}
+  ...   {%- endif %}
+  ... {% if value -%}
+  ...     whole_block_inside_if: {{ value }}
+  ... {%- else -%}
+  ...     error_message: bad_value
+  ... {%- endif %}
+  ... ''')
+  >>> pprint(convert({'value': 'Good value.', 'other_value': 'Other value'}))
+  {'inline_if': 'Good value.',
+   'multiline_if': 'Good value.',
+   'whole_block_inside_if': 'Good value.'}
 
 For default values use ternar operator in jinja variables
 ::
