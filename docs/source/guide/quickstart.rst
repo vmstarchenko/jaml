@@ -1,3 +1,5 @@
+.. highlight:: python
+
 ===============
 Quick start
 ===============
@@ -25,15 +27,35 @@ Templates almost pure jinja but customized for yaml files.
 Before values insert variables are escaped. For string parts use str filter
 ::
 
-  >>> import jiml
-  >>> template = {'v
+  >>> convert = jiml.load_template('''
+  ... escaped_string: {{ url }}
+  ... {{ url }}: escaped_string_as_key
+  ... composite_string: "{{ name | str }} {{ lastname | str }}"
+  ... ''')
+  >>> pprint(convert({'url': 'https://example.com', 'name': 'John', 'lastname': 'Doe'}))
+  {'composite_string': 'John Doe',
+   'escaped_string': 'https://example.com',
+   'https://example.com': 'escaped_string_as_key'}
 
 
 For lists use jinja loops
 ::
 
-  >>> import jiml
-
+  >>> convert = jiml.load_template('''
+  ... json_style_list: [
+  ...   {% for tag in tags %}
+  ...     { name: {{ tag.key }}, id: {{ tag.id }} },
+  ...   {% endfor %}
+  ... ]
+  ... yaml_style_list:
+  ...   {% for tag in tags %}
+  ...     - name: {{ tag.key }}
+  ...       id: {{ tag.id }}
+  ...   {% endfor %}
+  ... ''')
+  >>> pprint(convert({'tags': [{'key': 'tag1', 'id': 1}, {'key': 'tag2', 'id': 2}]}))
+  {'json_style_list': [{'id': 1, 'name': 'tag1'}, {'id': 2, 'name': 'tag2'}],
+   'yaml_style_list': [{'id': 1, 'name': 'tag1'}, {'id': 2, 'name': 'tag2'}]}
 
 Ifs are also available
 ::
