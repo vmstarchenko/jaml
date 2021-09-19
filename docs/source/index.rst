@@ -1,6 +1,8 @@
 Welcome to jiml's documentation!
 ================================
 
+|downloads| |license| |wheel| |pyversions| |build-status-image| |pypi-version| |codecov| |docs|
+
 .. include:: ../../README.rst
 
 --------------
@@ -39,3 +41,24 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. |downloads| image:: https://pepy.tech/badge/jiml/month
+    :target: https://pepy.tech/project/jiml
+    :alt: Requests Downloads Per Month Badge
+.. |license| image:: https://img.shields.io/pypi/l/jiml.svg
+    :target: https://pypi.org/project/jiml/
+    :alt: License Badge
+.. |wheel| image:: https://img.shields.io/pypi/wheel/jiml.svg
+    :target: https://pypi.org/project/jiml/
+    :alt: Wheel Support Badge
+.. |pyversions| image:: https://img.shields.io/pypi/pyversions/jiml.svg
+    :target: https://pypi.org/project/jiml/
+    :alt: Python Version Support Badge
+.. |build-status-image| image:: https://api.travis-ci.com/tfranzel/jiml.svg?branch=master
+      :target: https://travis-ci.com/tfranzel/jiml?branch=master
+.. |pypi-version| image:: https://img.shields.io/pypi/v/jiml.svg
+   :target: https://pypi.python.org/pypi/jiml
+.. |codecov| image:: https://codecov.io/gh/tfranzel/jiml/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/vmstarchenko/jiml
+.. |docs| image:: https://readthedocs.org/projects/jiml/badge/
+   :target: https://jiml.readthedocs.io/
