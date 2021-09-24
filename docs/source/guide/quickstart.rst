@@ -11,22 +11,19 @@ if you dont familiar with it's syntax check tutorials:
 * `jinja <https://ultraconfig.com.au/blog/jinja2-a-crash-course-for-beginners/>`_
 * `jinja more <https://jinja.palletsprojects.com/en/3.0.x/templates/>`_
 
-Для начала необходимо задать правила перекладывания json в json. Эти правила задаются с помощью
-Jinja шаблона. By design jinja используется для рендеринга HTML формата, но может использоваться
-и для других форматов. Мы можем использовать их и для рендеринга json, но из-за того, что json
-имеет слишком строгий и не гибкий синтаксис, мы используем формат yaml. Таким обрахом схема
-преобразований заключается в следующем:
+To begin with, you must set the rules of convention input json into output json. These rules
+are set with a Jinja template. By design, Jinga is used for rendering HTML-documents,
+but it can be also used for other formats. It is possible to use it for rendering json as well,
+but as json has too strict and inflexible syntax, yaml-format is more sutable. Thus, the full
+workflow is as follows:
+* The template describes the rules of the conversion the input json into the output yaml
+* The input json gets used as a context for Jinja template
+* Jinja converts the template and the context into a valid resulting yaml
+* Yaml is then loaded back from the text representation to the Python code
 
-* Шаблон описывает правила преобразования входного json в выходной yaml
-* Входной json используется в качестве контекста для jinja шаблона.
-* Jinja преобразует шаблон и контекст в валидный результирующий yaml
-* Yaml загружается  обратно из текстового представления внуть питона
-
-Давайте начнем с простого примера использования. Точкой входа является функция load_template
-которая возвращает объект Template кастомизированный для отрисовки yaml.
-Так как результат - это текст, то вложенность и сложность входного и выходного жсона не
-играют роли 
-.. First template template as plain text so no difference between nested and structures
+Let's continue with a simple usage example. An entry point is the function ``load_template``
+that returns the ``Template`` object, customized for rendering yaml. As the result is a text,
+depth and complexity of the input and output jsons doesn't matter. 
 ::
 
   >>> convert = jiml.load_template('''
@@ -37,11 +34,11 @@ Jinja шаблона. By design jinja используется для ренде
   >>> convert({'author': {'name': 'John' }, 'authenticated': True})
   {'author': 'John', 'permissions': {'authenticated': True}}
 
-Шаблоны джинджи кастомизированы для вывода в формате ямл, так что перед вставкой переменных используется
-экранирование. Например, урл не может вставляться как есть из за того что содержит сомвол двоеточия
-но автоматическое экранирование решает эту проблему.
-Если строчку нужно встачить в качестве части другой строчки, можно использовать фильтр str,
-окружив переменные кавычками.
+Jinga templates are customized for output in the yaml-format, so variables are escaped before
+substitution. For example, one can't insert a URL as is because it contains the colon mark,
+but the automatic escaping solves the problem. If it is required to insert the string
+as a part of some other string, you can use the ``str`` filter, while surrounding the
+variables with quotation marks.
 ::
 
   >>> convert = jiml.load_template('''
@@ -54,8 +51,8 @@ Jinja шаблона. By design jinja используется для ренде
    'escaped_string': 'https://example.com',
    'https://example.com': 'escaped_string_as_key'}
 
-Для обработки однотипных элементов можно использовать цикл из джинджи. при использовании
-циклов и объектов есть 2 варианта: отображение в json стиле и yaml стиле:
+To process similar objects you can use Jinja loops. There are two ways for representing
+lists and objects:
 ::
 
   >>> convert = jiml.load_template('''
@@ -74,8 +71,8 @@ Jinja шаблона. By design jinja используется для ренде
   {'json_style_list': [{'id': 1, 'name': 'tag1'}, {'id': 2, 'name': 'tag2'}],
    'yaml_style_list': [{'id': 1, 'name': 'tag1'}, {'id': 2, 'name': 'tag2'}]}
 
-Условные конструкции так же используют jinja синтаксис. Для использования значений по
-умолчанию можно использовать тернарные операторы внутри if или default фильтр из джинджи
+Conditional statements also use Jinja syntax. To set the defaults the ternary operators
+can be used or the ``default`` filter (from Jinja library).
 ::
 
   >>> convert = jiml.load_template('''
@@ -97,12 +94,12 @@ Jinja шаблона. By design jinja используется для ренде
    'multiline_if': 'Good value.',
    'whole_block_inside_if': 'Good value.'}
 
-Jiml шаблоны могут состоять из двух секций. Кроме самого шаблона в начале может идти секция
-которая описывает дополнительные опции шаблона. Эта секция обязательно начинается с последовательности
-# options и заканчивается последовательностью \n---\n
-Один из параметров является globals. Глобалс служит для того чтобы внести в глобальное пространство
-имен джинджи дополнительные переменные и модули. Это оказывается полезно при необходимости
-использовать какую-то функцию из стандартной библиотеки или стороннего модуля.
+Jiml templates can have two sections. Besides the template itself, the section
+that describes its additional options can precede it. This section must begin
+with the sequence ``# options\n`` and ends with ``\n---\n``. One of the possible
+parameters is ``globals``. It serves for adding the extra variables and modules
+to the global scope of Jinga template. It is useful if it is needed to use some
+function from the standard library or a third-party modules.
 ::
 
   >>> convert = jiml.load_template('''

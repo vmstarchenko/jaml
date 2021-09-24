@@ -52,7 +52,3 @@ and flexibility of `yaml <https://pyyaml.org/wiki/PyYAMLDocumentation>`_ format.
       "title": "Your favourite film",
       "year": 2021
   }
-
-This package demonstrates an approach for converting input json to output json without using python code directly.
-The conversion is done by Jinja library. Input json used as context for rendered template. Conversion rules are specified in template.
-Due to the fact that the json format has too strict syntax, the templates written to produce yaml as an alternative. 

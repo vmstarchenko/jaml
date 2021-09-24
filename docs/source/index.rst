@@ -28,6 +28,7 @@ Table of contents:
    guide/install
    guide/quickstart
    guide/validation
+   guide/performance
 
 .. guide/tests experimental
 .. tutorials
