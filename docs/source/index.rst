@@ -54,8 +54,8 @@ Indices and tables
 .. |pyversions| image:: https://img.shields.io/pypi/pyversions/jiml.svg
     :target: https://pypi.org/project/jiml/
     :alt: Python Version Support Badge
-.. |build-status-image| image:: https://api.travis-ci.com/tfranzel/jiml.svg?branch=master
-      :target: https://travis-ci.com/tfranzel/jiml?branch=master
+.. |build-status-image| image:: https://app.travis-ci.com/vmstarchenko/jiml.svg?branch=main
+      :target: https://travis-ci.com/vmstarchenko/jiml?branch=main
 .. |pypi-version| image:: https://img.shields.io/pypi/v/jiml.svg
    :target: https://pypi.python.org/pypi/jiml
 .. |codecov| image:: https://codecov.io/gh/tfranzel/jiml/branch/master/graph/badge.svg
