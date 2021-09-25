@@ -58,7 +58,7 @@ Indices and tables
       :target: https://travis-ci.com/vmstarchenko/jiml?branch=main
 .. |pypi-version| image:: https://img.shields.io/pypi/v/jiml.svg
    :target: https://pypi.python.org/pypi/jiml
-.. |codecov| image:: https://codecov.io/gh/tfranzel/jiml/branch/master/graph/badge.svg
+.. |codecov| image:: https://codecov.io/gh/vmstarchenko/jiml/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/vmstarchenko/jiml
 .. |docs| image:: https://readthedocs.org/projects/jiml/badge/
    :target: https://jiml.readthedocs.io/
