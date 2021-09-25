@@ -16,7 +16,7 @@ addons:
       - pypy
 
 install:
-  - pip install tox
+  - pip install tox distutils
 
 script:
   - tox
