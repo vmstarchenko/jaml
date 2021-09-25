@@ -1,22 +1,14 @@
 language: python
-python: 3.9
-
-dist: xenial
-sudo: required
-
-addons:
-  apt:
-    sources:
-      - deadsnakes
-    packages:
-      - python3.5
-      - python3.6
-      - python3.7
-      - python3.8
-      - pypy
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9"
+  - "nightly"
+  - "pypy3"
 
 install:
-  - pip install tox distutils
+  - pip install tox
 
 script:
   - tox
