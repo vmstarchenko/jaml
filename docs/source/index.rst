@@ -13,11 +13,10 @@ This part of the documentation, which is mostly prose, begins with some
 background information about Jiml, then focuses on step-by-step
 instructions for getting the most out of Jiml.
 
-джимл - это попытка облегчить и стандартизировать подход перекладывания
-джсон в джесон. Под капотом jiml использует такие инструменты как
-jinja yaml. Для возможности валидации он использует jsonschema.
-Если вы никогда не сталкивались с ними, в главе полезные ссылки есть
-ссылки на пятиминутные обзорные туториалы для каждой из этих технолоний
+This library is an attempt to make easier and standartize an approach to
+conversion json to json. Under the hood, Jiml uses Jinja and PyYAML libraries.
+jsonschema is used for validation. If you are not familiar with their syntax,
+there are some links for five-minute tutorials for each of these tools.
 
 Table of contents:
 
